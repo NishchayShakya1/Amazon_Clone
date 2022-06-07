@@ -46,3 +46,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /windows
+/server/node_modules
+/server/index.js
+/server/package-lock.json
