@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:amazon_full_stack/constants/error_handling.dart';
 import 'package:amazon_full_stack/constants/utils.dart';
+import 'package:amazon_full_stack/features/home/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +79,11 @@ class AuthService {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             Provider.of<UserProvider>(context, listen: false).setUser(res.body);
             await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
-            
+            Navigator.pushNamedAndRemoveUntil(
+              context, 
+              HomeScreen.routeName,
+              (route) => false,
+              );
           });
     } catch (e) {
       showSnackBar(context, e.toString());
