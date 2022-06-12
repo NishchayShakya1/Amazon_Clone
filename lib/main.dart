@@ -1,22 +1,36 @@
 import 'package:amazon_full_stack/constants/global_variables.dart';
 import 'package:amazon_full_stack/features/auth/screens/auth_screen.dart';
+import 'package:amazon_full_stack/features/auth/services/auth_service.dart';
+import 'package:amazon_full_stack/features/home/screens/home_screen.dart';
 import 'package:amazon_full_stack/providers/user_provider.dart';
 import 'package:amazon_full_stack/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(providers:[
+  runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
     )
   ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  final AuthService authService = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    authService.getUserData(context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,23 +42,8 @@ class MyApp extends StatelessWidget {
             appBarTheme: const AppBarTheme(
                 elevation: 0, iconTheme: IconThemeData(color: Colors.black))),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: const AuthScreen());
-    // Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('Amazon'),
-    //   ),
-    //   body: Column(
-    //     children: [
-    //       const Center(child: Text('Flutter Demo Home Page')),
-    //       Builder(builder: (context) {
-    //         return ElevatedButton(
-    //             onPressed: () {
-    //               Navigator.pushNamed(context, AuthScreen.routeName);
-    //             },
-    //             child: const Text('Click'));
-    //       })
-    //     ],
-    //   ),
-    // ));
+        home: Provider.of<UserProvider>(context).user.token.isNotEmpty
+            ? const HomeScreen()
+            : const AuthScreen());
   }
 }
