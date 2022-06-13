@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:amazon_full_stack/constants/error_handling.dart';
 import 'package:amazon_full_stack/constants/utils.dart';
-import 'package:amazon_full_stack/features/home/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../common/widgets/bottom_bar.dart';
 import '../../../constants/global_variables.dart';
 import '../../../models/user.dart';
 import 'package:http/http.dart' as http;
@@ -78,7 +78,7 @@ class AuthService {
                 'x-auth-token', jsonDecode(res.body)['token']);
             Navigator.pushNamedAndRemoveUntil(
               context,
-              HomeScreen.routeName,
+              BottomBar.routeName,
               (route) => false,
             );
           });
