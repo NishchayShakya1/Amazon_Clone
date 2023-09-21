@@ -8,17 +8,19 @@ const authRouter = require('./routes/auth')
 //INIT
 const PORT = 3000;
 const app = express();
+const DB = "mongodb+srv://amazon:Nishchay321@amazon.ndhknkv.mongodb.net/?retryWrites=true&w=majority"
 
 // middleware
 // Client -> middleware -> Server -> Client
+app.use(express.json());
 app.use(authRouter);
 
 
 // Generating an API
 // GET, PUT, POST, DELETE, UPDATE -> CRUD
 // Connections
-mongoose.connect().then(()=>{
-    console.log('Successful')
+mongoose.connect(DB).then(()=>{
+    console.log('Connection Successful')
 }).catch((e)=>{
     console.log(e);
 })
