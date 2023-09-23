@@ -39,6 +39,14 @@ class _AuthScreenState extends State<AuthScreen> {
         name: _nameController.text);
   }
 
+  void signInUser() {
+    authService.signInUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +57,9 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
                   'Welcome',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                 ),
@@ -95,11 +103,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             controller: _passwordController,
                             hintext: 'Password',
                           ),
-                          CustomButton(text: 'Sign Up', onTap: () {
-                            if(_signUpFormKey.currentState!.validate()){
-                                signUpUser();
-                            }
-                          })
+                          CustomButton(
+                              text: 'Sign Up',
+                              onTap: () {
+                                if (_signUpFormKey.currentState!.validate()) {
+                                  signUpUser();
+                                }
+                              })
                         ],
                       ),
                     ),
@@ -129,7 +139,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
-                      key: _signUpFormKey,
+                      key: _signInFormKey,
                       child: Column(
                         children: [
                           CustomTextField(
@@ -140,7 +150,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             controller: _passwordController,
                             hintext: 'Password',
                           ),
-                          CustomButton(text: 'Sign In', onTap: () {})
+                          CustomButton(text: 'Sign In', onTap: () {
+                            if(_signInFormKey.currentState!.validate()){
+                              signInUser();
+                            }
+                          })
                         ],
                       ),
                     ),
