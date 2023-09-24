@@ -1,6 +1,7 @@
 import 'package:amazon_clone/constants/global_variable.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screens.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
+import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:amazon_clone/router.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AuthService authService = AuthService();
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    authService.getUserData(context: context);
   }
 
   @override
@@ -39,23 +41,8 @@ class _MyAppState extends State<MyApp> {
             appBarTheme: const AppBarTheme(
                 elevation: 0, iconTheme: IconThemeData(color: Colors.black))),
         onGenerateRoute: ((settings) => generateRoute(settings)),
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Hello'),
-            ),
-            body: Column(
-              children: [
-                const Center(
-                  child: Text('Flutter Demo'),
-                ),
-                Builder(builder: (context) {
-                  return ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AuthScreen.routename);
-                      },
-                      child: const Text('click'));
-                })
-              ],
-            )));
+        home: Provider.of<UserProvider>(context).user.token.isNotEmpty
+            ? const HomeScreen()
+            : const AuthScreen());
   }
 }
