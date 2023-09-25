@@ -1,3 +1,4 @@
+import 'package:amazon_clone/common/widgets/button_bar.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screens.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case HomeScreen.routename:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const HomeScreen());
+
+    case BottomBar.routename:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const BottomBar());
 
     default:
       return MaterialPageRoute(

@@ -1,6 +1,7 @@
 // ignore_for_file: empty_catches, use_build_context_synchronously
 import 'dart:convert';
 
+import 'package:amazon_clone/common/widgets/button_bar.dart';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
 import 'package:amazon_clone/constants/utils.dart';
@@ -80,7 +81,7 @@ class AuthService {
             await prefs.setString(
                 'x-auth-token', jsonDecode(res.body)['token']);
             Navigator.pushNamedAndRemoveUntil(
-                context, HomeScreen.routename, (route) => false);
+                context, BottomBar.routename, (route) => false);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
