@@ -22,7 +22,6 @@ class AddressBox extends StatelessWidget {
       ])),
       padding: const EdgeInsets.only(left: 10),
       child: Row(
-        
         children: [
           const Icon(
             Icons.location_on_outlined,
@@ -31,16 +30,19 @@ class AddressBox extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 5),
-              child: Text('Delivery to ${name[0]} - ${user.address}',
-              style: const TextStyle(
-                fontWeight: FontWeight.w200
-              ),
-              overflow: TextOverflow.ellipsis,
+              child: Text(
+                'Delivery to ${name[0]} - ${user.address}',
+                style: const TextStyle(fontWeight: FontWeight.w200),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.only(left: 5, top: 2, right: 10),
-          child: Icon(Icons.arrow_drop_down_outlined, size: 18,),
+          const Padding(
+            padding: EdgeInsets.only(left: 5, top: 2, right: 10),
+            child: Icon(
+              Icons.arrow_drop_down_outlined,
+              size: 18,
+            ),
           )
         ],
       ),
