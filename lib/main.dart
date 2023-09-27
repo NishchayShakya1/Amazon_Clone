@@ -1,5 +1,6 @@
 import 'package:amazon_clone/common/widgets/button_bar.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
+import 'package:amazon_clone/features/admin/screens/admin_screens.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screens.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -44,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0, iconTheme: IconThemeData(color: Colors.black))),
         onGenerateRoute: ((settings) => generateRoute(settings)),
         home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-            ? const BottomBar()
+            ? Provider.of<UserProvider>(context).user.type == 'user' ? const BottomBar(): const AdminScreen()
             : const AuthScreen());
   }
 }
