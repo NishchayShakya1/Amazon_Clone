@@ -5,6 +5,7 @@ import 'package:amazon_clone/common/widgets/button_bar.dart';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
 import 'package:amazon_clone/constants/utils.dart';
+import 'package:amazon_clone/features/admin/screens/admin_screens.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -79,8 +80,10 @@ class AuthService {
             Provider.of<UserProvider>(context, listen: false).setUser(res.body);
             await prefs.setString(
                 'x-auth-token', jsonDecode(res.body)['token']);
+            Provider.of<UserProvider>(context).user.type == 'user'?
             Navigator.pushNamedAndRemoveUntil(
-                context, BottomBar.routename, (route) => false);
+                context, BottomBar.routename, (route) => false): Navigator.pushNamedAndRemoveUntil(
+                context, AdminScreen.routename, (route) => false);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
