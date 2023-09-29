@@ -35,13 +35,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Amazon Clone',
+        
         theme: ThemeData(
             useMaterial3: false,
             scaffoldBackgroundColor: GlobalVariables.backgroundColor,
             colorScheme: const ColorScheme.light(
                 primary: GlobalVariables.secondaryColor),
             appBarTheme: const AppBarTheme(
-                
+                centerTitle: true,
                 elevation: 0, iconTheme: IconThemeData(color: Colors.black))),
         onGenerateRoute: ((settings) => generateRoute(settings)),
         home: Provider.of<UserProvider>(context).user.token.isNotEmpty
