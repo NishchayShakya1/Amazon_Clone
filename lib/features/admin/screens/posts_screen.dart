@@ -1,4 +1,5 @@
 import 'package:amazon_clone/common/widgets/loader.dart';
+import 'package:amazon_clone/features/account/widgets/single_product.dart';
 import 'package:amazon_clone/features/admin/screens/add_products_screen.dart';
 import 'package:amazon_clone/features/admin/services/admin_service.dart';
 import 'package:amazon_clone/models/product.dart';
@@ -23,9 +24,17 @@ class _PostScreenState extends State<PostScreen> {
 
   fetchAllProducts() async {
     products = await adminServices.fetchAllProducts(context);
-    setState(() {
-      
-    });
+    setState(() {});
+  }
+
+  void deleteProduct(Product product, int index) {
+    adminServices.deleteProduct(
+        context: context,
+        product: product,
+        onSuccess: (() {
+          products!.removeAt(index);
+          setState(() {});
+        }));
   }
 
   void navigateToAddProduct() {
@@ -37,12 +46,6 @@ class _PostScreenState extends State<PostScreen> {
     return products == null
         ? const Loader()
         : Scaffold(
-            body: const Center(
-              child: Text(
-                'Products',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
             floatingActionButton: FloatingActionButton(
               onPressed: navigateToAddProduct,
               tooltip: 'Add a Product',
@@ -50,6 +53,35 @@ class _PostScreenState extends State<PostScreen> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-          );
+            body: GridView.builder(
+                itemCount: products!.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  final productData = products![index];
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 140,
+                        child: SingleProduct(image: productData.images[0]),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                              child: Text(
+                            productData.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          )),
+                          IconButton(
+                              onPressed: () =>
+                                  deleteProduct(productData, index),
+                              icon: const Icon(Icons.delete_outline))
+                        ],
+                      )
+                    ],
+                  );
+                }));
   }
 }
