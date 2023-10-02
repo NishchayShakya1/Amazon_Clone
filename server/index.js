@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // Import from Other FIles
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
+const productRouter = require('./routes/product');
 
 //INIT
 const PORT = 3000;
@@ -16,6 +17,7 @@ const DB = "mongodb+srv://amazon:Nishchay321@amazon.ndhknkv.mongodb.net/?retryWr
 app.use(express.json());
 app.use(authRouter);
 app.use(adminRouter);
+app.use(productRouter); 
 
 
 // Generating an API
