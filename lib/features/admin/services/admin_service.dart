@@ -42,7 +42,7 @@ class AdminServices {
           price: price);
 
       http.Response res = await http.post(Uri.parse('$uri/admin/add-product'),
-          headers: <String, String>{
+          headers:{
             'Content-Type': "application/json; charset=UTF-8",
             'x-auth-token': userProvider.user.token
           },
