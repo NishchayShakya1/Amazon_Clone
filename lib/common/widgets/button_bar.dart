@@ -1,8 +1,10 @@
 import 'package:amazon_clone/constants/global_variable.dart';
 import 'package:amazon_clone/features/account/screens/account_screen.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
+import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
   static const String routename = '/actual-home';
@@ -33,6 +35,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    final userCartlen = context.watch<UserProvider>().user.cart.length;
     return Scaffold(
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
@@ -76,16 +79,18 @@ class _BottomBarState extends State<BottomBar> {
                                 ? GlobalVariables.selectedNavBarColor
                                 : GlobalVariables.backgroundColor,
                             width: bottomBarBorderWidth))),
-                child:  badges.Badge(
-                    badgeContent: const Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: Text('2', style: TextStyle(color: 
-                                 GlobalVariables.backgroundColor, fontSize: 15)),
+                child: badges.Badge(
+                    badgeContent: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(userCartlen.toString(),
+                          style: const TextStyle(
+                              color: GlobalVariables.backgroundColor,
+                              fontSize: 15)),
                     ),
                     badgeStyle: badges.BadgeStyle(
-                      badgeColor:  _page == 2
-                                ? GlobalVariables.selectedNavBarColor
-                                : GlobalVariables.unselectedNavBarColor,
+                      badgeColor: _page == 2
+                          ? GlobalVariables.selectedNavBarColor
+                          : GlobalVariables.unselectedNavBarColor,
                       elevation: 0,
                     ),
                     child: const Icon(Icons.shopping_cart_checkout_outlined)),
