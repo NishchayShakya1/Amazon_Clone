@@ -1,5 +1,8 @@
+import 'package:amazon_clone/common/widgets/loader.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
+import 'package:amazon_clone/features/account/services/account_services.dart';
 import 'package:amazon_clone/features/account/widgets/single_product.dart';
+import 'package:amazon_clone/models/order.dart';
 import 'package:flutter/material.dart';
 
 class Orders extends StatefulWidget {
@@ -11,16 +14,25 @@ class Orders extends StatefulWidget {
 
 class _OrdersState extends State<Orders> {
   // temporary list
-  List list = [
-    "https://images.unsplash.com/photo-1695562768215-06c1c889b014?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=800&q=60",
-    "https://images.unsplash.com/photo-1695562768215-06c1c889b014?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=800&q=60",
-    "https://images.unsplash.com/photo-1695562768215-06c1c889b014?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=800&q=60",
-    "https://images.unsplash.com/photo-1695562768215-06c1c889b014?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=800&q=60",
-  ];
+  List<Order>? orders;
+  final AccountServices accountServices = AccountServices();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrders();
+  }
+
+  void fetchOrders() async {
+    orders = await accountServices.fetchMyOrders(
+      context: context,
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return orders == null ? const Loader() : Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,10 +60,10 @@ class _OrdersState extends State<Orders> {
           height: 170,
           padding: const EdgeInsets.only(left: 10, top: 20, right: 0),
           child: ListView.builder(
-            scrollDirection: Axis.horizontal ,
-              itemCount: list.length,
+              scrollDirection: Axis.horizontal,
+              itemCount: orders!.length,
               itemBuilder: (context, index) {
-                return SingleProduct(image: list[index]);
+                return SingleProduct(image: orders![index].products[0].images[0]);
               }),
         )
       ],

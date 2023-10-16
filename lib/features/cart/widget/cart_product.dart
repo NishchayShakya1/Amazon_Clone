@@ -1,3 +1,5 @@
+import 'package:amazon_clone/features/cart/services/cart_services.dart';
+import 'package:amazon_clone/features/product_details/services/product_details_service.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,24 @@ class CartProduct extends StatefulWidget {
 }
 
 class _CartProductState extends State<CartProduct> {
+  final ProductDetailsServices productDetailsServices =
+      ProductDetailsServices();
+  final CartServices cartServices = CartServices();
+
+  void increaseQuantity(Product product) {
+    productDetailsServices.addToCart(
+      context: context,
+      product: product,
+    );
+  }
+
+  void decreaseQuantity(Product product) {
+    cartServices.removeFromCart(
+      context: context,
+      product: product,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final productCart = context.watch<UserProvider>().user.cart[widget.index];
@@ -88,13 +108,16 @@ class _CartProductState extends State<CartProduct> {
                     color: Colors.black12),
                 child: Row(
                   children: [
-                    Container(
-                      width: 35,
-                      height: 32,
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.remove,
-                        size: 18,
+                    InkWell(
+                      onTap: () => decreaseQuantity(product),
+                      child: Container(
+                        width: 35,
+                        height: 32,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.remove,
+                          size: 18,
+                        ),
                       ),
                     ),
                     DecoratedBox(
@@ -108,13 +131,16 @@ class _CartProductState extends State<CartProduct> {
                           alignment: Alignment.center,
                           child: Text(quantity.toString())),
                     ),
-                    Container(
-                      width: 35,
-                      height: 32,
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.add,
-                        size: 18,
+                    InkWell(
+                      onTap: () => increaseQuantity(product),
+                      child: Container(
+                        width: 35,
+                        height: 32,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.add,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ],
