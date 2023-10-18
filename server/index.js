@@ -9,9 +9,12 @@ const productRouter = require('./routes/product');
 const userRouter = require('./routes/user');
 
 //INIT
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
-const DB = "mongodb+srv://amazon:Nishchay321@amazon.ndhknkv.mongodb.net/?retryWrites=true&w=majority"
+
+//environment variable
+require('dotenv').config();
+const DB = process.env.MONGODB_URI;
 
 // middleware
 // Client -> middleware -> Server -> Client
