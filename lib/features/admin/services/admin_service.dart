@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
 import 'package:amazon_clone/constants/utils.dart';
+import 'package:amazon_clone/features/admin/models/sales.dart';
 import 'package:amazon_clone/models/order.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -115,6 +116,36 @@ class AdminServices {
     }
   }
 
+  void changeOrderStatus({
+    required BuildContext context,
+    required int status,
+    required Order order,
+    required VoidCallback onSuccess,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      http.Response res =
+          await http.delete(Uri.parse('$uri/admin/change-order-status'),
+              headers: <String, String>{
+                'Content-Type': "application/json; charset=UTF-8",
+                'x-auth-token': userProvider.user.token
+              },
+              body: jsonEncode({
+                'id': order.id,
+                'status': status,
+              }));
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: onSuccess,
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      debugPrint(e.toString());
+    }
+  }
+
   Future<List<Order>> fetchAllOrders(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Order> orderList = [];
@@ -145,5 +176,43 @@ class AdminServices {
       debugPrint(e.toString());
     }
     return orderList;
+  }
+
+  Future<Map<String, dynamic>> getEarnings(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Sales> sales = [];
+    int totalEarning = 0;
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/analytics'),
+        headers: <String, String>{
+          'Content-Type': "application/json; charset=UTF-8",
+          'x-auth-token': userProvider.user.token
+        },
+      );
+
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            var response = jsonDecode(res.body);
+            totalEarning = response['totalEarnings'];
+            sales = [
+              Sales('Mobiles', response['mobilesEarnings']),
+              Sales('Essentials', response['essentialsEarnings']),
+              Sales('Appilances', response['appliancesEarnings']),
+              Sales('Books', response['booksEarnings']),
+              Sales('Fashion', response['fashionEarnings'])
+            ];
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      debugPrint(e.toString());
+    }
+    return {
+      'sales': sales,
+      'totalEarning': totalEarning,
+    };
   }
 }
